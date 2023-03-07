@@ -5,7 +5,7 @@ pipeline {
         stage('Testing Server Connection') {
             steps {
                 sshagent(['SERVER-KEY']) {
-                    sh '''ssh -T azureuser@4.246.215.8 <<EOF
+                    sh '''ssh -o StrictHostKeyChecking=no -T azureuser@4.246.215.8 <<EOF
                     echo "Testing..."
                     whoami
                     exit
