@@ -1,0 +1,113 @@
+@Library("Shared-Library") _
+
+pipeline {
+    agent any
+    
+    parameters {
+        booleanParam(name: "EXAMPLE_1", defaultValue: false)
+        booleanParam(name: "EXAMPLE_2", defaultValue: false)
+        booleanParam(name: "EXAMPLE_3", defaultValue: false)
+        booleanParam(name: "EXAMPLE_4", defaultValue: false)
+        booleanParam(name: "EXAMPLE_5", defaultValue: false)
+        booleanParam(name: "EXAMPLE_6", defaultValue: false)
+        booleanParam(name: "EXAMPLE_7", defaultValue: false)
+        booleanParam(name: "EXAMPLE_8", defaultValue: false)
+    }
+
+    stages {
+        
+        stage('Calling Shared Library - Example 1') {
+            when {
+                expression {
+                    params.EXAMPLE_1
+                }
+            }
+            steps {
+                message()
+            }
+        }
+        
+        stage('Calling Shared Library - Example 2') {
+            when {
+                expression {
+                    params.EXAMPLE_2
+                }
+            }
+            steps {
+                parameter("Manu", "Thursday")                
+            }
+        }
+        
+        stage('Calling Shared Library - Example 3') {
+            when {
+                expression {
+                    params.EXAMPLE_3
+                }
+            }
+            steps {
+                welcome(dayOfWeek:"Monday", name:"Nithin")
+            }
+        }
+        
+        stage('Calling Shared Library - Example 4') {
+            when {
+                expression {
+                    params.EXAMPLE_4
+                }
+            }
+            steps {
+                script {
+                    calculator.add(20, 2)
+                    calculator.sub(20, 2)
+                    calculator.mul(20, 2)
+                    calculator.div(20, 2)
+                }
+            }
+        }
+        
+        stage('Calling Shared Library - Example 5') {
+            when {
+                expression {
+                    params.EXAMPLE_5
+                }
+            }
+            steps {
+                test()
+            }
+        }
+        
+        stage('Calling Shared Library - Example 6') {
+            when {
+                expression {
+                    params.EXAMPLE_6
+                }
+            }
+            steps {
+               java_program()
+            }
+        }
+        
+        stage('Calling Shared Library - Example 7') {
+            when {
+                expression {
+                    params.EXAMPLE_7
+                }
+            }
+            steps {
+                pass_build(name:"first.sh", number:"${BUILD_NUMBER}")
+            }
+        }
+        
+        stage('Calling Shared Library - Example 8') {
+            when {
+                expression {
+                    params.EXAMPLE_8
+                }
+            }
+            steps {
+                loading_fun()
+            }
+        }
+
+    }
+}
