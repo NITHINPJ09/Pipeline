@@ -94,7 +94,7 @@ pipeline {
                 }
             }
             steps {
-                pass_build(name:"first.sh", number:"${BUILD_NUMBER}")
+                pass_build(name:"first.sh", number:"${currentBuild.number}")
             }
         }
         
