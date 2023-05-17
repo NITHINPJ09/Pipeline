@@ -1,0 +1,38 @@
+pipeline {
+    agent any 
+    stages {
+        
+        stage('---Checkout---') { 
+            steps {
+                git 'https://github.com/NITHINPJ09/Maven-Demo-Project.git'
+            }
+        }  
+        
+        stage('---Version---') { 
+            steps {
+                sh 'mvn -version'
+            }
+        }   
+                     
+        stage('---Clean---') { 
+            steps {
+                sh 'mvn clean'
+            }
+        }
+        
+        stage('---Test---') { 
+            steps {
+                sh 'mvn test'
+            }
+        }
+        
+        stage('---SonarQube---') { 
+            steps {
+                withSonarQubeEnv('SQ1') {
+                    sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar -Dsonar.organization=devopspracticals'
+                }
+            }
+        }
+        
+    }
+}
