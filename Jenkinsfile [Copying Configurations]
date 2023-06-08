@@ -1,0 +1,24 @@
+@Library("Configurations") _
+
+pipeline {
+    agent any
+    environment {
+        SERVER_CREDS = credentials('Server-Credentials')
+    }
+    stages {
+        stage('Copying Configurations') {
+            steps {
+                copy()
+                sh '''
+                    scp -i $SERVER_CREDS -o StrictHostKeyChecking=accept-new ease-constant.ts $SERVER_CREDS_USR@20.228.241.116:/home/azureuser/EASE
+                    scp -i $SERVER_CREDS -o StrictHostKeyChecking=accept-new easeConstants.js $SERVER_CREDS_USR@20.228.241.116:/home/azureuser/EASE
+                    '''
+            }
+        }
+    }
+    post {
+        always {
+            deleteDir()
+        }
+    }
+}
