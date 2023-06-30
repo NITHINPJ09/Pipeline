@@ -1,0 +1,32 @@
+pipeline {
+    agent any
+    stages {
+        stage('---Chekout---') {
+            steps {
+                git branch: 'branch_one', credentialsId: 'GITLAB_USR_PASS', url: 'https://gitlab.com/npjproject/test.git'
+            }
+        }
+        stage('---SonarQube Analysis---') { 
+            environment {
+                SCANNER_HOME = tool 'scannerHome'
+                PROJECT_NAME = 'Demo-Project'
+                PROJECT_KEY = 'Demo-Project-009'
+            }
+            steps {
+                withSonarQubeEnv('MySonarQube') {
+                    sh '''$SCANNER_HOME/bin/sonar-scanner \
+                      -Dsonar.projectName=$PROJECT_NAME \
+                      -Dsonar.projectKey=$PROJECT_KEY \
+                      -Dsonar.projectBaseDir=.'''
+                }
+            }
+        }
+        stage('---Quality Gate---') {
+            steps {
+                timeout(time: 5, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+    }
+}
