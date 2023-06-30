@@ -1,7 +1,7 @@
 pipeline {
     agent any
     stages {
-        stage('---Chekout---') {
+        stage('---Checkout---') {
             steps {
                 git branch: 'branch_one', credentialsId: 'GITLAB_USR_PASS', url: 'https://gitlab.com/npjproject/test.git'
             }
