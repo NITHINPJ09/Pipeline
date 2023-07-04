@@ -1,0 +1,24 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  name: Azure Pipelines
+steps:
+- task: ArchiveFiles@2
+  displayName: 'Archive DeployToLambda/lambda_function.py'
+  inputs:
+    rootFolderOrFile: 'DeployToLambda/lambda_function.py'
+    archiveFile: 'DeployToLambda/lambda_function.py.zip'
+
+- task: AmazonWebServices.aws-vsts-tools.LambdaDeployFunction.LambdaDeployFunction@1
+  displayName: 'Deploy Lambda Function: arn:aws:lambda:us-west-1:187276065257:function:azureDeployLambda'
+  inputs:
+    awsCredentials: ConnectionForAWS
+    regionName: 'us-west-1'
+    functionName: 'arn:aws:lambda:us-west-1:187276065257:function:azureDeployLambda'
+    localZipFile: 'DeployToLambda/lambda_function.py.zip'
