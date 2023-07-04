@@ -1,0 +1,27 @@
+pool:
+  vmImage: ubuntu-latest 
+jobs:
+- job: GenerateFiles
+  displayName: Generate Files
+  steps:
+  - script: |
+      # Generate files here
+      echo "This is file 100" > file1.txt
+      echo "This is file 200" > file2.txt
+    displayName: Generate Files
+  # Publish the generated files as artifacts
+  - publish: $(System.DefaultWorkingDirectory)
+    artifact: MyGeneratedFiles
+
+- job: UseFiles
+  displayName: Use Files
+  dependsOn: GenerateFiles
+  steps:
+  # Download the artifacts
+  - download: current
+    artifact: MyGeneratedFiles
+  - script: |
+      # Access the downloaded files
+      cat $(Pipeline.Workspace)/MyGeneratedFiles/file1.txt
+      cat $(Pipeline.Workspace)/MyGeneratedFiles/file2.txt
+    displayName: Use Files
